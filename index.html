@@ -1,1 +1,433 @@
-hello
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nur Studio — Приложения</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== ГАРАНТИРОВАННЫЕ РАЗМЕРЫ ЛОГОТИПОВ ===== */
+        .loader-logo { width:140px !important; height:140px !important; min-width:140px !important; min-height:140px !important; }
+        .loader-logo-wrap { width:160px !important; height:160px !important; }
+        .logo-img { width:60px !important; height:60px !important; min-width:60px !important; min-height:60px !important; }
+        .header-logo-box { width:60px !important; height:60px !important; }
+        .about-logo { width:130px !important; height:130px !important; min-width:130px !important; min-height:130px !important; }
+        .footer-logo { width:50px !important; height:50px !important; min-width:50px !important; min-height:50px !important; }
+        .loader-center { width:280px !important; height:280px !important; }
+        .ring-outer { width:280px !important; height:280px !important; }
+        .ring-mid { width:230px !important; height:230px !important; }
+        .ring-inner { width:180px !important; height:180px !important; }
+        .loader-spark-ring { width:280px !important; height:280px !important; }
+    </style>
+</head>
+<body>
+
+<!-- ===== LOADER ===== -->
+<div class="loader" id="loader">
+    <div class="loader-bg"></div>
+    
+    <div class="lightning-container">
+        <svg class="lightning lt-1" viewBox="0 0 100 400" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="60,0 30,160 55,160 20,400" fill="none" stroke="url(#grad1)" stroke-width="2.5" stroke-linecap="round"/>
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#fff;stop-opacity:0"/>
+                    <stop offset="40%" style="stop-color:#c084fc;stop-opacity:1"/>
+                    <stop offset="100%" style="stop-color:#7c5cfc;stop-opacity:0.3"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <svg class="lightning lt-2" viewBox="0 0 100 400" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="40,0 70,150 45,150 80,400" fill="none" stroke="url(#grad2)" stroke-width="3" stroke-linecap="round"/>
+            <defs>
+                <linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#fff;stop-opacity:0"/>
+                    <stop offset="40%" style="stop-color:#e879f9;stop-opacity:1"/>
+                    <stop offset="100%" style="stop-color:#a855f7;stop-opacity:0.2"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <svg class="lightning lt-3" viewBox="0 0 60 300" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="30,0 10,120 28,120 5,300" fill="none" stroke="url(#grad3)" stroke-width="1.5" stroke-linecap="round"/>
+            <defs>
+                <linearGradient id="grad3" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#fff;stop-opacity:0"/>
+                    <stop offset="50%" style="stop-color:#38f9d7;stop-opacity:0.8"/>
+                    <stop offset="100%" style="stop-color:#7c5cfc;stop-opacity:0"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <svg class="lightning lt-4" viewBox="0 0 60 300" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="20,0 45,130 25,130 50,300" fill="none" stroke="url(#grad4)" stroke-width="2" stroke-linecap="round"/>
+            <defs>
+                <linearGradient id="grad4" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#fff;stop-opacity:0"/>
+                    <stop offset="45%" style="stop-color:#c084fc;stop-opacity:0.9"/>
+                    <stop offset="100%" style="stop-color:#e879f9;stop-opacity:0"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <svg class="lightning lt-5" viewBox="0 0 80 350" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="50,0 20,140 42,140 15,350" fill="none" stroke="url(#grad5)" stroke-width="2" stroke-linecap="round"/>
+            <defs>
+                <linearGradient id="grad5" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#fff;stop-opacity:0"/>
+                    <stop offset="40%" style="stop-color:#7c5cfc;stop-opacity:1"/>
+                    <stop offset="100%" style="stop-color:#38f9d7;stop-opacity:0.1"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+
+    <div class="loader-center">
+        <div class="loader-ring ring-outer"></div>
+        <div class="loader-ring ring-mid"></div>
+        <div class="loader-ring ring-inner"></div>
+        <div class="loader-spark-ring">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+            <span></span><span></span>
+        </div>
+        <div class="loader-logo-wrap">
+            <img src="images/logo.png" alt="Nur Studio" class="loader-logo" style="width:140px!important; height:140px!important; min-width:140px!important; min-height:140px!important;">
+            <div class="logo-electric-glow"></div>
+        </div>
+    </div>
+
+    <div class="loader-text-wrap">
+        <div class="loader-brand">Nur Studio</div>
+        <div class="loader-tagline">
+            <span class="lt-char">D</span><span class="lt-char">i</span><span class="lt-char">g</span>
+            <span class="lt-char">i</span><span class="lt-char">t</span><span class="lt-char">a</span>
+            <span class="lt-char">l</span><span class="lt-char"> </span><span class="lt-char">P</span>
+            <span class="lt-char">r</span><span class="lt-char">o</span><span class="lt-char">d</span>
+            <span class="lt-char">u</span><span class="lt-char">c</span><span class="lt-char">t</span>
+            <span class="lt-char">s</span>
+        </div>
+        <div class="loader-bar-wrap">
+            <div class="loader-bar"></div>
+            <div class="loader-bar-glow"></div>
+        </div>
+        <div class="loader-percent">0%</div>
+    </div>
+
+    <div class="loader-particles">
+        <i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i>
+    </div>
+</div>
+
+<!-- ===== MAIN SITE ===== -->
+<div class="site-wrap" id="siteWrap">
+
+    <!-- Фоновые частицы -->
+    <div class="bg-particles">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo-wrap">
+                <div class="header-logo-box" style="width:60px!important; height:60px!important;">
+                    <img src="images/logo.png" alt="Nur Studio Logo" class="logo-img" style="width:60px!important; height:60px!important; min-width:60px!important; min-height:60px!important;">
+                    <div class="header-logo-glow"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">Nur Studio</span>
+                    <span class="logo-sub">Digital Products</span>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="#apps">Приложения</a>
+                <a href="#about">О нас</a>
+                <a href="#contact">Контакт</a>
+            </nav>
+            <button class="nav-burger" id="navBurger">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">✦ Официальный сайт</div>
+            <h1 class="hero-title">
+                <span class="gradient-text">Nur</span> Studio
+            </h1>
+            <p class="hero-desc">
+                Создаём приложения, которые делают жизнь проще.<br>
+                Скачивай. Пользуйся. Наслаждайся.
+            </p>
+            <a href="#apps" class="hero-btn">
+                <span>Смотреть приложения</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+            </a>
+        </div>
+        <div class="hero-visual">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="phone-notch"></div>
+                    <div class="phone-app-icon"></div>
+                    <div class="phone-line"></div>
+                    <div class="phone-line short"></div>
+                    <div class="phone-line"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== APPS LIST ===== -->
+    <section class="apps-section" id="apps">
+        <div class="section-header">
+            <div class="section-tag">Наши продукты</div>
+            <h2 class="section-title">Приложения</h2>
+            <p class="section-desc">Все приложения проверены и безопасны</p>
+        </div>
+
+        <div class="apps-grid">
+
+            <div class="app-card">
+                <div class="app-card-glow"></div>
+                <div class="app-info">
+                   <div class="app-icon">
+    <img src="images/shar.png" alt="Pop the Bubble" style="width:100%; height:100%; object-fit:cover; border-radius:14px;">
+</div>
+                    <div class="app-details">
+                        <h3 class="app-name">Pop the Bubble</h3>
+                        <span class="app-category">Игра</span>
+                        <div class="app-meta">
+                            <span class="app-platform">Android</span>
+                        </div>
+                        <div class="app-tags">
+                            <span class="tag">Бесплатно</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <div class="app-rating">
+                    </div>
+                    <a href="downloads/app1.apk" class="download-btn" download>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+                            <path d="M12 5v14M5 12l7 7 7-7"/>
+                        </svg>
+                        <span>Скачать</span>
+                    </a>
+                </div>
+            </div>
+            <div class="dev-section">
+    <div class="dev-icon">🚀</div>
+    <h3 class="dev-title">Мы разрабатываем новые приложения</h3>
+    <p class="dev-text">
+        Наша команда работает над крутыми проектами.<br>
+        Следите за обновлениями — скоро будет ещё интереснее!
+    </p>
+    <div class="dev-status">
+        <span class="status-badge">В разработке</span>
+        <span class="status-badge">Скоро</span>
+        <span class="status-badge">Новинки</span>
+    </div>
+</div>
+
+
+
+            <!-- <div class="app-card">
+                <div class="app-card-glow" style="background:radial-gradient(circle at 50% 0%,rgba(67,233,123,.15),transparent 70%)"></div>
+                <div class="app-info">
+                       <div class="app-icon">
+    <img src="images/shar.png" alt="Pop the Bubble" style="width:100%; height:100%; object-fit:cover; border-radius:14px;">
+</div>
+                    <div class="app-details">
+                        <h3 class="app-name">Название приложения 3</h3>
+                        <span class="app-category">Утилиты</span>
+                        <div class="app-meta">
+                            <span class="app-platform">Android</span>
+                        </div>
+                        <div class="app-tags">
+                            <span class="tag">Бесплатно</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <div class="app-rating">
+                    </div>
+                    <a href="downloads/app3.apk" class="download-btn" download>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+                            <path d="M12 5v14M5 12l7 7 7-7"/>
+                        </svg>
+                        <span>Скачать</span>
+                    </a>
+                </div>
+            </div>
+
+        </div> -->
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section class="about-section" id="about">
+        <div class="about-inner">
+            <div class="about-text">
+                <div class="section-tag">О студии</div>
+                <h2 class="section-title">Мы создаём<br><span class="gradient-text">качество</span></h2>
+                <p>Nur Studio — независимая студия разработки мобильных приложений. Мы верим в простоту, скорость и красоту интерфейсов.</p>
+                <div class="about-features">
+                    <div class="feature">
+                        <div class="feature-icon">⚡</div>
+                        <div>
+                            <strong>Быстрые</strong>
+                            <p>Оптимизированы для максимальной производительности</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🔒</div>
+                        <div>
+                            <strong>Безопасные</strong>
+                            <p>Никаких скрытых разрешений и слежки</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎨</div>
+                        <div>
+                            <strong>Красивые</strong>
+                            <p>Современный дизайн и удобный интерфейс</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" id="contact">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="images/logo.png" alt="Nur Studio" class="footer-logo" style="width:50px!important; height:50px!important; min-width:50px!important; min-height:50px!important;">
+                <span>Nur Studio</span>
+            </div>
+            <div class="footer-links">
+                <a href="#apps">Приложения</a>
+                <a href="#about">О нас</a>
+                <a href="mailto:info@nurstudio.com">Контакт</a>
+            </div>
+            <div class="footer-social">
+                <a href="#" class="social-btn">TG</a>
+                <a href="#" class="social-btn">VK</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Nur Studio. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+</div>
+
+<script>
+/* ============================================
+   LOADER
+   ============================================ */
+const loader = document.getElementById('loader');
+const siteWrap = document.getElementById('siteWrap');
+const bar = document.querySelector('.loader-bar');
+const barGlow = document.querySelector('.loader-bar-glow');
+const percent = document.querySelector('.loader-percent');
+
+let prog = 0;
+const iv = setInterval(() => {
+    prog += Math.random() * 4 + 1;
+    if (prog >= 100) { prog = 100; clearInterval(iv); finishLoader(); }
+    bar.style.width = prog + '%';
+    barGlow.style.width = prog + '%';
+    percent.textContent = Math.floor(prog) + '%';
+}, 60);
+
+function finishLoader() {
+    setTimeout(() => {
+        loader.classList.add('loader-out');
+        siteWrap.classList.add('site-in');
+        setTimeout(() => { loader.style.display = 'none'; }, 900);
+    }, 400);
+}
+
+/* ============================================
+   COUNTERS
+   ============================================ */
+const counters = document.querySelectorAll('.stat-number');
+const cObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const target = +entry.target.dataset.target;
+        let count = 0;
+        const step = Math.ceil(target / 60);
+        const t = setInterval(() => {
+            count += step;
+            if (count >= target) { count = target; clearInterval(t); }
+            entry.target.textContent = count.toLocaleString('ru');
+        }, 30);
+        cObs.unobserve(entry.target);
+    });
+}, { threshold: 0.5 });
+counters.forEach(c => cObs.observe(c));
+
+/* ============================================
+   SCROLL TOP
+   ============================================ */
+window.addEventListener('scroll', () => {
+    document.getElementById('scrollTop').classList.toggle('visible', scrollY > 400);
+});
+document.getElementById('scrollTop').onclick = () => window.scrollTo({ top:0, behavior:'smooth' });
+
+/* ============================================
+   CARD REVEAL
+   ============================================ */
+document.querySelectorAll('.app-card').forEach((c, i) => {
+    c.style.opacity = '0';
+    c.style.transform = 'translateY(40px)';
+    c.style.transition = `opacity .6s ease ${i * 0.12}s, transform .6s ease ${i * 0.12}s`;
+    new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) {
+            c.style.opacity = '1';
+            c.style.transform = 'translateY(0)';
+        }
+    }, { threshold: 0.1 }).observe(c);
+});
+
+/* ============================================
+   DOWNLOAD FEEDBACK
+   ============================================ */
+document.querySelectorAll('.download-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const span = this.querySelector('span');
+        const orig = span.textContent;
+        span.textContent = 'Скачивается...';
+        this.classList.add('downloading');
+        setTimeout(() => {
+            span.textContent = '✓ Готово!';
+            this.classList.remove('downloading');
+            this.classList.add('done');
+            setTimeout(() => {
+                span.textContent = orig;
+                this.classList.remove('done');
+            }, 2000);
+        }, 1500);
+    });
+});
+</script>
+</body>
+</html>
