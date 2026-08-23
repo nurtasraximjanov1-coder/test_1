@@ -1,393 +1,776 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кресло vs Стул | Выбор для ПК-зоны</title>
-    <style>
-        /* === Базовые стили и переменные === */
-        :root {
-            --bg-dark: #0a0b10;
-            --card-bg: rgba(22, 27, 38, 0.7);
-            --accent-green: #00ff88;
-            --accent-blue: #00bfff;
-            --danger-red: #ff4757;
-            --text-main: #f0f3f8;
-            --text-sub: #94a3b8;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citylights Dream Town</title>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
+    body {
+      background-color: #17212b;
+      color: #333;
+      overflow-x: hidden;
+    }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-        /* === Плавающий неоновый фон === */
-        .bg-glow {
-            position: fixed;
-            width: 350px;
-            height: 350px;
-            border-radius: 50%;
-            filter: blur(120px);
-            z-index: -1;
-            opacity: 0.4;
-            animation: floatGlow 12s infinite alternate ease-in-out;
-        }
+    .btn {
+      display: inline-block;
+      padding: 10px 28px;
+      border: 1px solid #333;
+      border-radius: 30px;
+      background: transparent;
+      color: #333;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
 
-        .glow-1 {
-            top: -50px;
-            left: -50px;
-            background: var(--accent-green);
-        }
+    .btn:hover {
+      background-color: #333;
+      color: #fff;
+    }
 
-        .glow-2 {
-            bottom: 10%;
-            right: -50px;
-            background: var(--accent-blue);
-            animation-delay: -6s;
-        }
+    .btn-light {
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #fff;
+    }
 
-        @keyframes floatGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, 80px) scale(1.2); }
-        }
+    .btn-light:hover {
+      background-color: #fff;
+      color: #17212b;
+    }
 
-        /* === Контейнер === */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    .grid-bg-container {
+      position: relative;
+    }
 
-        /* === Шапка (Hero Section) === */
-        header {
-            min-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
-        }
+    .grid-bg-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 24.8%, rgba(255,255,255,0.05) 25%, transparent 25.2%, transparent 49.8%, rgba(255,255,255,0.05) 50%, transparent 50.2%, transparent 74.8%, rgba(255,255,255,0.05) 75%, transparent 75.2%);
+      pointer-events: none;
+      z-index: 1;
+    }
 
-        .badge {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--accent-green);
-            color: var(--accent-green);
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            animation: pulseBadge 2s infinite;
-        }
+    .light-section.grid-bg-container::before {
+      background: linear-gradient(90deg, transparent 24.8%, rgba(0,0,0,0.04) 25%, transparent 25.2%, transparent 49.8%, rgba(0,0,0,0.04) 50%, transparent 50.2%, transparent 74.8%, rgba(0,0,0,0.04) 75%, transparent 75.2%);
+    }
 
-        @keyframes pulseBadge {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
-            50% { transform: scale(1.03); box-shadow: 0 0 15px 4px rgba(0, 255, 136, 0.2); }
-        }
+    .hero-section {
+      background-color: #f7f7f7;
+      padding: 30px 8% 80px;
+      position: relative;
+    }
 
-        h1 {
-            font-size: clamp(2.2rem, 5vw, 3.8rem);
-            font-weight: 800;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 50px;
+      position: relative;
+      z-index: 2;
+    }
 
-        header p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-sub);
-            max-width: 650px;
-            margin-bottom: 35px;
-        }
+    .logo img {
+      height: 38px;
+      object-fit: contain;
+    }
 
-        .cta-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent-green), #00b359);
-            color: #05100a;
-            padding: 16px 36px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
-        }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
 
-        .cta-btn:hover {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 15px 35px rgba(0, 255, 136, 0.5);
-        }
+    nav a {
+      font-size: 13px;
+      color: #555;
+      transition: color 0.3s;
+    }
 
-        /* === Секция причин === */
-        .section-title {
-            text-align: center;
-            font-size: clamp(1.8rem, 4vw, 2.6rem);
-            margin: 60px 0 40px;
-        }
+    nav a:hover {
+      color: #000;
+    }
 
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 30px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(40px);
-        }
+    .hero-left h1 {
+      font-size: 46px;
+      line-height: 1.15;
+      color: #1a1a1a;
+      margin-bottom: 25px;
+      font-weight: 700;
+    }
 
-        .card.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .hero-left p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 35px;
+      padding-left: 15px;
+      border-left: 2px solid #b89c7d;
+    }
 
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(0, 255, 136, 0.4);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-        }
+    .hero-right-container {
+      position: relative;
+    }
 
-        .card-icon {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-            display: inline-block;
-            transition: transform 0.3s ease;
-        }
+    .hero-main-img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
 
-        .card:hover .card-icon {
-            transform: scale(1.2) rotate(5deg);
-        }
+    .hero-thumbs {
+      display: flex;
+      gap: 15px;
+      position: absolute;
+      bottom: -30px;
+      right: -30px;
+    }
 
-        .card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 12px;
-            color: var(--text-main);
-        }
+    .hero-thumbs img {
+      width: 130px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 4px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
 
-        .card p {
-            color: var(--text-sub);
-            font-size: 0.98rem;
-        }
+    .charm-section {
+      background-color: #17212b;
+      color: #fff;
+      padding: 100px 8% 80px;
+      position: relative;
+    }
 
-        /* === Интерактивное сравнение === */
-        .comparison-section {
-            margin: 80px 0;
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 35px 25px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+    .charm-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
 
-        .comparison-table {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 25px;
-        }
+    .charm-subtitle {
+      font-size: 13px;
+      color: #9aa8b9;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-        .comp-column {
-            background: rgba(0, 0, 0, 0.25);
-            padding: 20px;
-            border-radius: 16px;
-        }
+    .charm-left h2 {
+      font-size: 40px;
+      line-height: 1.2;
+      color: #d1b187;
+      font-weight: 600;
+    }
 
-        .comp-column.chair {
-            border-top: 4px solid var(--accent-green);
-        }
+    .charm-right p {
+      color: #9aa8b9;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
 
-        .comp-column.stool {
-            border-top: 4px solid var(--danger-red);
-        }
+    .charm-center-btn {
+      text-align: center;
+      margin-top: 50px;
+      position: relative;
+      z-index: 2;
+    }
 
-        .comp-column h4 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .vector-bg-wrap {
+      text-align: center;
+      margin-top: 40px;
+      position: relative;
+      z-index: 2;
+    }
 
-        .comp-list {
-            list-style: none;
-        }
+    .vector-bg {
+      width: 100%;
+      max-width: 450px;
+      opacity: 0.4;
+    }
 
-        .comp-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .rooms-section {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background-color: #17212b;
+    }
 
-        .comp-list li:last-child {
-            border-bottom: none;
-        }
+    .room-card {
+      position: relative;
+      height: 480px;
+      overflow: hidden;
+    }
 
-        /* === Футер === */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-sub);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 60px;
-        }
+    .room-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
 
-        /* === Адаптивность для мобильных экранов === */
-        @media (max-width: 768px) {
-            header {
-                min-height: auto;
-                padding: 60px 15px;
-            }
+    .room-card:hover img {
+      transform: scale(1.08);
+    }
 
-            .comparison-table {
-                grid-template-columns: 1fr;
-            }
+    .room-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 30px;
+      background: linear-gradient(to top, rgba(15,22,30,0.9), transparent);
+      color: #fff;
+    }
 
-            .cta-btn {
-                width: 100%;
-                text-align: center;
-            }
-        }
-    </style>
+    .room-overlay h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .room-overlay p {
+      font-size: 12px;
+      color: #bbb;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .room-overlay .price {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    /* NEIGHBORHOOD */
+    .neighborhood-section {
+      background-color: #17212b;
+      color: #fff;
+      padding: 100px 8%;
+      position: relative;
+    }
+
+    .neighborhood-header {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .neighborhood-header span {
+      font-size: 13px;
+      color: #9aa8b9;
+    }
+
+    .neighborhood-header h2 {
+      font-size: 38px;
+      color: #d1b187;
+      margin-top: 10px;
+    }
+
+    .neighborhood-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .gallery-left {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .gallery-item p {
+      color: #9aa8b9;
+      font-size: 13px;
+      margin-top: 15px;
+      line-height: 1.6;
+    }
+
+    .gallery-right {
+      margin-top: 60px;
+    }
+
+    .articles-section {
+      background-color: #ffffff;
+      padding: 90px 8%;
+      position: relative;
+    }
+
+    .articles-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 45px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .articles-top .subtitle {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .articles-top h2 {
+      font-size: 36px;
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .article-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 18px;
+    }
+
+    .article-card h3 {
+      font-size: 15px;
+      line-height: 1.4;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .article-card a.read-link {
+      font-size: 13px;
+      color: #666;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .article-card a.read-link:hover {
+      color: #000;
+    }
+
+  
+    .subscribe-section {
+      background-color: #ffffff;
+      padding: 60px 8% 100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      border-top: 1px solid #eeeeee;
+    }
+
+    .subscribe-section h2 {
+      font-size: 34px;
+      color: #1a1a1a;
+      max-width: 380px;
+      line-height: 1.25;
+      font-weight: 700;
+      position: relative;
+      z-index: 2;
+    }
+
+    .subscribe-form {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #aaa;
+      padding-bottom: 10px;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .subscribe-form input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .subscribe-form button {
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #1a1a1a;
+      white-space: nowrap;
+    }
+
+    footer {
+      background-color: #17212b;
+      color: #9aa8b9;
+      padding: 80px 8% 40px;
+      font-size: 13px;
+      position: relative;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-brand img {
+      height: 38px;
+      margin-bottom: 20px;
+    }
+
+    .footer-col h4 {
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 12px;
+    }
+
+    .footer-col ul li a:hover {
+      color: #fff;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-icons img {
+      width: 34px;
+      height: 34px;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    
+    @media (max-width: 1024px) {
+      .rooms-section {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .articles-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 20px;
+      }
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 18px;
+      }
+      .hero-grid, .charm-grid, .neighborhood-gallery {
+        grid-template-columns: 1fr;
+      }
+      .hero-left h1 {
+        font-size: 34px;
+      }
+      .hero-thumbs {
+        position: static;
+        margin-top: 15px;
+        justify-content: flex-end;
+      }
+      .articles-grid {
+        grid-template-columns: 1fr;
+      }
+      .articles-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      .subscribe-section {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .gallery-right {
+        margin-top: 0;
+      }
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .rooms-section {
+        grid-template-columns: 1fr;
+      }
+      .hero-left h1 {
+        font-size: 28px;
+      }
+      .charm-left h2, .neighborhood-header h2, .subscribe-section h2 {
+        font-size: 28px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Неоновые фоновые пятна -->
-    <div class="bg-glow glow-1"></div>
-    <div class="bg-glow glow-2"></div>
+  <section class="hero-section light-section grid-bg-container">
+    <header data-aos="fade-down">
+      <div class="logo">
+        <img src="img/LOGO.png" alt="Citylights Dream Town">
+      </div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">The Residences</a>
+        <a href="#">Neighborhood</a>
+        <a href="#">Gallery</a>
+        <a href="#" class="btn">Contact</a>
+      </nav>
+    </header>
 
-    <div class="container">
-        <!-- Шапка страницы -->
-        <header>
-            <div class="badge">Эргономика ПК-зоны</div>
-            <h1>Хватит Сидеть на Табурете!</h1>
-            <p>Почему замена обычного стула на анатомическое эргономичное кресло — это лучшая инвестиция в твою продуктивность и здоровье спины.</p>
-            <a href="#reasons" class="cta-btn">Узнать почему</a>
-        </header>
+    <div class="hero-grid">
+      <div class="hero-left" data-aos="fade-right">
+        <h1>There Is Nothing Like Staying At Home For Real Comfort.</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non lobortis.</p>
+        <a href="#" class="btn">Explore</a>
+      </div>
+      <div class="hero-right-container" data-aos="fade-left">
+        <img src="img/Mask group.png" alt="Interior" class="hero-main-img">
+        <div class="hero-thumbs">
+          <img src="img/Mask group (1).png" alt="Thumb 1">
+          <img src="img/Mask group (2).png" alt="Thumb 2">
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Основной блок причин -->
-        <section id="reasons">
-            <h2 class="section-title">6 Причин Выбрать Анатомическое Кресло</h2>
-            <div class="cards-grid">
-                
-                <div class="card">
-                    <span class="card-icon">🦴</span>
-                    <h3>Поддержка Поясницы</h3>
-                    <p>Обычный стул плоский. Компьютерное кресло повторяет естественный S-образный изгиб позвоночника, снимая нагрузку с поясничного отдела.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">⚡</span>
-                    <h3>+40% к Продуктивности</h3>
-                    <p>Когда ничего не затекает и не болит, ты сосредоточен на работе или игре, а не на поиске удобной позы каждые 15 минут.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">💪</span>
-                    <h3>Свобода Плеч и Шеи</h3>
-                    <p>Регулируемые подлокотники удерживают локти под углом 90°, благодаря чему плечевой пояс и шея больше не перенапрягаются.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">⚙️</span>
-                    <h3>Точечная Настройка</h3>
-                    <p>Высота, угол наклона спинки, жесткость качания, подголовник — кресло подстраивается под твой рост и вес, а не наоборот.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">🩸</span>
-                    <h3>Здоровое Кровообращение</h3>
-                    <p>Специальный закруглённый край сиденья не пережимает сосуды под коленями. Ноги не затекают и не «немеют» после долгих сессий.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">🎮</span>
-                    <h3>Режим Отдыха и Качания</h3>
-                    <p>Функция откидывания спинки (до 135°-180°) позволяет откинуться назад, расслабить мышцы и посмотреть видео прямо на месте.</p>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Секция прямого сравнения -->
-        <section class="comparison-section">
-            <h2 class="section-title" style="margin: 0 0 10px 0;">Прямое Сравнение</h2>
-            <p style="text-align: center; color: var(--text-sub);">Что происходит с твоим телом во время 4+ часов за ПК:</p>
-
-            <div class="comparison-table">
-                <div class="comp-column chair">
-                    <h4><span>✅</span> Хорошее Кресло</h4>
-                    <ul class="comp-list">
-                        <li><span>✨</span> Позвоночник находится в правильном положении</li>
-                        <li><span>✨</span> Нагрузка распределяется равномерно</li>
-                        <li><span>✨</span> Подлокотники снимают вес с рук</li>
-                        <li><span>✨</span> Суставы и мышцы не затекают</li>
-                    </ul>
-                </div>
-
-                <div class="comp-column stool">
-                    <h4><span>❌</span> Обычный Стул</h4>
-                    <ul class="comp-list">
-                        <li><span>⚠️</span> Осанка сутулится через 20 минут</li>
-                        <li><span>⚠️</span> Острая нагрузка на копчик и поясницу</li>
-                        <li><span>⚠️</span> Руки висят в воздухе, напрягая плечи</li>
-                        <li><span>⚠️</span> Быстрое утомление и головные боли</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+  <section class="charm-section grid-bg-container">
+    <div class="charm-grid">
+      <div class="charm-left" data-aos="fade-right">
+        <div class="charm-subtitle">Now Leasing</div>
+        <h2>Experience The Charm Of Vivamus Ullamcorper.</h2>
+      </div>
+      <div class="charm-right" data-aos="fade-left">
+        <p>Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Curabitur Non Lobortis Nibh, Nec Scelerisque Eros. Fusce Aliquam Convallis Eros Id Luctus.</p>
+        <p>Praesent Placerat Nunc Rutrum Tellus Elementum Placerat. Vestibulum Pulvinar Nulla Massa. Class Aptent Taciti Sociosqu Ad Litora Torquent Per Conubia Nostra, Per Inceptos Himenaeos.</p>
+      </div>
     </div>
 
-    <footer>
-        <p>Береги свою спину — выбирай правильное рабочее место! 🖥️✨</p>
-    </footer>
+    <div class="charm-center-btn" data-aos="zoom-in">
+      <a href="#" class="btn btn-light">Schedule A Tour</a>
+    </div>
 
-    <!-- JS для анимации появления элементов при скролле -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.card');
+    <div class="vector-bg-wrap" data-aos="fade-up">
+      <img src="img/Vector.png" alt="Pattern" class="vector-bg">
+    </div>
+  </section>
 
-            const observerOptions = {
-                threshold: 0.15,
-                rootMargin: "0px 0px -50px 0px"
-            };
+  <section class="rooms-section">
+    <div class="room-card" data-aos="fade-up" data-aos-delay="100">
+      <img src="img/Mask group (3).png" alt="Studios">
+      <div class="room-overlay">
+        <h3>Studios</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <div class="price">Starting at $2100</div>
+      </div>
+    </div>
+    <div class="room-card" data-aos="fade-up" data-aos-delay="200">
+      <img src="img/Mask group (4).png" alt="Penthouses">
+      <div class="room-overlay">
+        <h3>Penthouses</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <div class="price">Starting at $2500</div>
+      </div>
+    </div>
+    <div class="room-card" data-aos="fade-up" data-aos-delay="300">
+      <img src="img/Mask group (5).png" alt="1 Bed Rooms">
+      <div class="room-overlay">
+        <h3>1 Bed Rooms</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <div class="price">Starting at $2400</div>
+      </div>
+    </div>
+    <div class="room-card" data-aos="fade-up" data-aos-delay="400">
+      <img src="img/Mask group (6).png" alt="2 Story Walk Ups">
+      <div class="room-overlay">
+        <h3>2 Story Walk Ups</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <div class="price">Starting at $2900</div>
+      </div>
+    </div>
+  </section>
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        // Каскадная задержка для красивого появления
-                        setTimeout(() => {
-                            entry.target.classList.add('active');
-                        }, index * 100);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
+  <section class="neighborhood-section grid-bg-container">
+    <div class="neighborhood-header" data-aos="fade-up">
+      <span>Neighborhood</span>
+      <h2>Peaceful Yet Connected.</h2>
+    </div>
 
-            cards.forEach(card => observer.observe(card));
-        });
-    </script>
+    <div class="neighborhood-gallery">
+      <div class="gallery-left">
+        <div class="gallery-item" data-aos="fade-right">
+          <img src="img/Mask group (7).png" alt="Neighborhood 1">
+          <p>Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Curabitur Non Lobortis Nibh.</p>
+          <a href="#" class="btn btn-light" style="margin-top: 15px;">Explore</a>
+        </div>
+        <div class="gallery-item" data-aos="fade-right">
+          <img src="img/Mask group (9).png" alt="Neighborhood 2">
+        </div>
+      </div>
+
+      <div class="gallery-right">
+        <div class="gallery-item" data-aos="fade-left">
+          <p style="margin-bottom: 20px;">Praesent Placerat Nunc Rutrum Tellus Elementum Placerat. Vestibulum Pulvinar Nulla Massa. Class Aptent Taciti Sociosqu Ad Litora Torquent Per Conubia Nostra, Per Inceptos Himenaeos.</p>
+          <img src="img/Mask group (8).png" alt="Neighborhood 3">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="articles-section light-section grid-bg-container">
+    <div class="articles-top" data-aos="fade-up">
+      <div>
+        <div class="subtitle">News</div>
+        <h2>Latest Articles</h2>
+      </div>
+      <a href="#" class="btn">Explore</a>
+    </div>
+
+    <div class="articles-grid">
+      <div class="article-card" data-aos="fade-up" data-aos-delay="100">
+        <img src="img/Bitmap.png" alt="Article 1">
+        <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h3>
+        <a href="#" class="read-link">Read</a>
+      </div>
+      <div class="article-card" data-aos="fade-up" data-aos-delay="200">
+        <img src="img/Bitmap (1).png" alt="Article 2">
+        <h3>Morbi ligula massa, posuere in finibus ut, varius ac ligula.</h3>
+        <a href="#" class="read-link">Read</a>
+      </div>
+      <div class="article-card" data-aos="fade-up" data-aos-delay="300">
+        <img src="img/Bitmap (2).png" alt="Article 3">
+        <h3>Sed nec lorem scelerisque, viverra ex ut, interdum massa.</h3>
+        <a href="#" class="read-link">Read</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="subscribe-section light-section grid-bg-container" data-aos="fade-up">
+    <h2>Receive Hot Deals In Your Inbox</h2>
+    <form class="subscribe-form" onsubmit="event.preventDefault();">
+      <input type="email" placeholder="Enter You Email Address" required>
+      <button type="submit">Subscribe &rarr;</button>
+    </form>
+  </section>
+
+  <footer class="grid-bg-container">
+    <div class="footer-top">
+      <div class="footer-brand" data-aos="fade-up">
+        <img src="img/LOGO.png" alt="Citylights">
+      </div>
+      <div class="footer-col" data-aos="fade-up" data-aos-delay="100">
+        <h4>MENU</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">The Residences</a></li>
+          <li><a href="#">Neighborhood</a></li>
+          <li><a href="#">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col" data-aos="fade-up" data-aos-delay="200">
+        <h4>CONTACT</h4>
+        <ul>
+          <li>leasing@contact.com</li>
+          <li>123.456.7891</li>
+          <li>8998 Lorem ipsum.</li>
+          <li>Maecenas et. CA, 54321</li>
+        </ul>
+      </div>
+      <div class="footer-col" data-aos="fade-up" data-aos-delay="300">
+        <h4>SOCIAL</h4>
+        <div class="social-icons">
+          <img src="img/social.png" alt="Social Links">
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>Copyright &copy; CITYLIGHTS. All Rights Reserved.</div>
+      <div>
+        <a href="#" style="margin-right: 20px;">Terms of Use</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+  </script>
 </body>
 </html>
