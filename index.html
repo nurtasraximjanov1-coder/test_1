@@ -2,247 +2,462 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ma'lumotlar formasi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kechirasanmi? 🥞</title>
 <style>
   * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
-  
+
   body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
+    background: linear-gradient(-45deg, #ffd89b, #f4a261, #e76f51, #ffb4a2);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .screen {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .screen.active {
+    display: flex;
+    animation: fadeInScreen 0.8s ease;
+  }
+
+  @keyframes fadeInScreen {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 30px;
+    padding: 40px 30px;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    position: relative;
+    animation: cardPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  @keyframes cardPop {
+    0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  h1 {
+    color: #e76f51;
+    margin-bottom: 20px;
+    font-size: 26px;
+    animation: pulse 2s infinite;
+  }
+
+  h2 {
+    color: #f4a261;
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .big-icon {
+    font-size: 70px;
+    margin-bottom: 20px;
+    animation: wobble 2s infinite;
+    display: inline-block;
+  }
+
+  @keyframes wobble {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-10deg) scale(1.1); }
+    75% { transform: rotate(10deg) scale(1.1); }
+  }
+
+  .sad-icon {
+    animation: sadShake 3s infinite;
+  }
+
+  @keyframes sadShake {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    10% { transform: translateX(-5px) rotate(-5deg); }
+    20% { transform: translateX(5px) rotate(5deg); }
+    30% { transform: translateX(-5px) rotate(-5deg); }
+    40% { transform: translateX(0) rotate(0deg); }
+  }
+
+  .story-text {
+    text-align: left;
+    line-height: 1.8;
+    color: #555;
+    font-size: 16px;
+    margin: 20px 0;
+    animation: fadeInText 1.5s ease;
+  }
+
+  @keyframes fadeInText {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  button {
+    padding: 15px 35px;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 10px;
+  }
+
+  .btn-main {
+    background: linear-gradient(135deg, #f4a261, #e76f51);
+    color: white;
+    box-shadow: 0 10px 20px rgba(231, 111, 81, 0.4);
+  }
+
+  .btn-main:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(231, 111, 81, 0.6);
+  }
+
+  .btn-main:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .buttons-container {
     display: flex;
     justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    position: relative;
+    min-height: 120px;
     align-items: center;
-    padding: 20px;
   }
-  
-  .form-container {
-    background: white;
-    border-radius: 20px;
-    padding: 30px 25px;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+
+  #btnYes, #btnNo {
+    position: relative;
+    transition: transform 0.2s ease-out;
   }
-  
-  h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 25px;
-    font-size: 24px;
-  }
-  
-  .form-group {
-    margin-bottom: 18px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 6px;
-    color: #555;
-    font-weight: 600;
-    font-size: 14px;
-  }
-  
-  input, select {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-  }
-  
-  input:focus, select:focus {
-    outline: none;
-    border-color: #667eea;
-  }
-  
-  button {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  #btnNo {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
     color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 17px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: transform 0.2s;
   }
-  
-  button:active {
-    transform: scale(0.97);
+
+  .floating-pancakes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
   }
-  
-  button:disabled {
+
+  .floating-pancake {
+    position: absolute;
+    font-size: 25px;
+    animation: floatDown linear infinite;
     opacity: 0.6;
-    cursor: not-allowed;
   }
-  
-  .success-message {
-    display: none;
-    background: #4CAF50;
-    color: white;
+
+  @keyframes floatDown {
+    0% {
+      transform: translateY(-50px) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.6;
+    }
+    90% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    z-index: 1000;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    to {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  .final-emoji {
+    font-size: 60px;
+    margin: 20px 0;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  .signature {
+    margin-top: 25px;
+    font-style: italic;
+    color: #e76f51;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .promise-box {
+    background: #fff3e0;
+    border-radius: 15px;
     padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    margin-top: 15px;
-    font-weight: 600;
+    margin: 15px 0;
+    border-left: 4px solid #f4a261;
+    text-align: left;
+    font-size: 15px;
+    color: #6b4423;
   }
-  
-  .error-message {
-    display: none;
-    background: #f44336;
-    color: white;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    margin-top: 15px;
-    font-weight: 600;
+
+  .next-btn-wrap {
+    margin-top: 20px;
   }
-  
-  .loading {
-    display: none;
-    text-align: center;
-    color: #667eea;
-    margin-top: 10px;
-    font-weight: 600;
+
+  @media (max-width: 480px) {
+    .card {
+      padding: 30px 20px;
+    }
+    h1 {
+      font-size: 20px;
+    }
+    h2 {
+      font-size: 18px;
+    }
+    .big-icon {
+      font-size: 55px;
+    }
+    .story-text {
+      font-size: 14px;
+    }
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+    }
   }
 </style>
 </head>
 <body>
 
-<div class="form-container">
-  <h1>📋 Ma'lumotlarni to'ldiring</h1>
-  
-  <form id="dataForm">
-    <div class="form-group">
-      <label>Ismingiz *</label>
-      <input type="text" id="ism" required placeholder="Ismingizni kiriting">
+<div class="floating-pancakes" id="floatingPancakes"></div>
+
+<!-- Экран 1: Начало извинения -->
+<div class="screen active" id="screen1">
+  <div class="card">
+    <div class="big-icon sad-icon">😔</div>
+    <h1>Mening sevgilim...</h1>
+    <p style="color: #666; font-size: 16px; margin-top: 10px;">Senga aytadigan gapim bor</p>
+    <div class="next-btn-wrap">
+      <button class="btn-main" onclick="nextScreen('screen1', 'screen2')">Davom etish →</button>
     </div>
-    
-    <div class="form-group">
-      <label>Familiyangiz *</label>
-      <input type="text" id="familiya" required placeholder="Familiyangizni kiriting">
+  </div>
+</div>
+
+<!-- Экран 2: История про блинчики -->
+<div class="screen" id="screen2">
+  <div class="card">
+    <div class="big-icon">🥞</div>
+    <h2>Bugun nima bo'ldi...</h2>
+    <div class="story-text">
+      <p>Bugun sen men uchun o'z qo'ling bilan, sevgi bilan <strong>Blinchik</strong> pishirding. 🥞</p>
+      <br>
+      <p>Sen meni o'ylab, vaqtingni sarflab, mehr bilan tayyorlading... Lekin men... men ularni olishni unutib qo'ydim. 😔</p>
+      <br>
+      <p>Bilaman, bu sen uchun alam qilgandir. Sen mehr ko'rsatding, men esa beparvolik qildim.</p>
     </div>
-    
-    <div class="form-group">
-      <label>Tug'ilgan sanangiz *</label>
-      <input type="date" id="sana" required>
+    <div class="next-btn-wrap">
+      <button class="btn-main" onclick="nextScreen('screen2', 'screen3')">Davom etish →</button>
     </div>
-    
-    <div class="form-group">
-      <label>Qaysi avtomobil markasi yoqadi? *</label>
-      <select id="avtomobil" required>
-        <option value="">Tanlang...</option>
-        <option value="Chevrolet">Chevrolet</option>
-        <option value="BMW">BMW</option>
-        <option value="Mercedes-Benz">Mercedes-Benz</option>
-        <option value="Toyota">Toyota</option>
-        <option value="Lexus">Lexus</option>
-        <option value="Audi">Audi</option>
-        <option value="Kia">Kia</option>
-        <option value="Hyundai">Hyundai</option>
-        <option value="Boshqa">Boshqa</option>
-      </select>
+  </div>
+</div>
+
+<!-- Экран 3: Извинение -->
+<div class="screen" id="screen3">
+  <div class="card">
+    <div class="big-icon">🙏</div>
+    <h1>Kechir meni, iltimos</h1>
+    <div class="story-text">
+      <p>Men bilaman, bu kichkina narsa emas. Sen men uchun qildigan har bir ish muhim, va men buni qadrlashim kerak edi.</p>
+      <br>
+      <p>Blinchikni unutganim uchun emas, balki sening mehringni, mehnatingni e'tiborsiz qoldirganim uchun kechirim so'rayman.</p>
+      <br>
+      <p>Men juda uyalyapman va o'zimni yomon his qilyapman. Sen bunday munosabatga loyiq emassan.</p>
     </div>
-    
-    <div class="form-group">
-      <label>Sizga kim yoqadi? (ism)</label>
-      <input type="text" id="yoqadigan" placeholder="Ismini kiriting">
+    <div class="promise-box">
+      💝 Va'da beraman: keyingi safar Esdan chiqmidi!
     </div>
-    
-    <div class="form-group">
-      <label>Sevimli faningiz *</label>
-      <select id="fan" required>
-        <option value="">Tanlang...</option>
-        <option value="Matematika">Matematika</option>
-        <option value="Fizika">Fizika</option>
-        <option value="Kimyo">Kimyo</option>
-        <option value="Biologiya">Biologiya</option>
-        <option value="Ingliz tili">Ingliz tili</option>
-        <option value="Tarix">Tarix</option>
-        <option value="Informatika">Informatika</option>
-        <option value="Ona tili">Ona tili</option>
-        <option value="Boshqa">Boshqa</option>
-      </select>
+    <div class="next-btn-wrap">
+      <button class="btn-main" onclick="nextScreen('screen3', 'screen4')">Davom etish →</button>
     </div>
-    
-    <div class="form-group">
-      <label>Oyoq kiyim razmeringiz *</label>
-      <input type="number" id="razmer" required min="30" max="50" placeholder="Masalan: 42">
+  </div>
+</div>
+
+<!-- Экран 4: Вопрос о прощении -->
+<div class="screen" id="screen4">
+  <div class="card">
+    <div class="big-icon">🥺</div>
+    <h1>Meni kechirasanmi?</h1>
+    <p style="color: #666; margin-bottom: 15px;">Iltimos, menga bir imkoniyat ber</p>
+    <div class="buttons-container">
+      <button class="btn-main" id="btnYes" onclick="handleYes()">Ha, kechiraman ❤️</button>
+      <button class="btn-main" id="btnNo" onclick="handleNo()">Yo'q</button>
     </div>
-    
-    <button type="submit" id="submitBtn">Yuborish ✓</button>
-    
-    <div class="loading" id="loading">⏳ Yuborilmoqda...</div>
-    <div class="success-message" id="successMsg">✅ Muvaffaqiyatli yuborildi!</div>
-    <div class="error-message" id="errorMsg">❌ Xatolik yuz berdi. Qayta urinib ko'ring.</div>
-  </form>
+  </div>
+</div>
+
+<!-- Экран 5: Финал -->
+<div class="screen" id="screen5">
+  <div class="card">
+    <div class="final-emoji">🥞💕🎉</div>
+    <h1>RAHMAT, SEVGILIM!</h1>
+    <div class="story-text">
+      <p>Sen eng yaxshi insonsan! Mening kechirimimni qabul qilganing uchun rahmat. 💖</p>
+      <br>
+      <p>Men va'da beraman, bundan keyin sen uchun qilgan har bir ishingni, har bir Blinchikni, har bir mehringni qadrlayman.</p>
+      <br>
+      <p>Sen pishirgan Blinchik dunyodagi eng mazali narsa, chunki unda sening mehring bor. Keyingi safar albatta birga yeymiz! 🥞❤️</p>
+      <br>
+      <p>Seni juda sevaman va hech qachon xafa qilmaslikka harakat qilaman.</p>
+    </div>
+    <div class="signature">- Seni sevgan va qadrlagan odam 💑</div>
+  </div>
 </div>
 
 <script>
-  // ⚠️ ВАЖНО: Вставьте сюда вашу ссылку из Apps Script
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby30gp3w5wFHueOtqRKnKH4jcRe7SeHmO_1eR_UhROa8aMSgT5wQ8GRiF4TEAV6cFBl/exec";
+  function nextScreen(hideId, showId) {
+    document.getElementById(hideId).classList.remove('active');
+    document.getElementById(showId).classList.add('active');
+  }
 
-  document.getElementById('dataForm').addEventListener('submit', function(e) {
+  // Счетчик нажатий на "Да"
+  let yesClickCount = 0;
+
+  function moveButtonAway(btn) {
+    const container = btn.parentElement;
+    const containerRect = container.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    
+    const maxX = containerRect.width - btnRect.width;
+    const maxY = containerRect.height - btnRect.height;
+    
+    const randomX = Math.random() * maxX - maxX/2;
+    const randomY = Math.random() * maxY - maxY/2;
+    
+    btn.style.position = 'relative';
+    btn.style.left = randomX + 'px';
+    btn.style.top = randomY + 'px';
+  }
+
+  function handleNo() {
+    const btnNo = document.getElementById('btnNo');
+    moveButtonAway(btnNo);
+  }
+
+  document.getElementById('btnNo').addEventListener('mouseover', function() {
+    moveButtonAway(this);
+  });
+
+  document.getElementById('btnNo').addEventListener('touchstart', function(e) {
     e.preventDefault();
+    moveButtonAway(this);
+  });
+
+  function handleYes() {
+    createConfetti();
+    setTimeout(() => {
+      document.getElementById('screen4').classList.remove('active');
+      document.getElementById('screen5').classList.add('active');
+    }, 800);
+  }
+
+  // Летающие блинчики на фоне
+  function createFloatingPancake() {
+    const icons = ['🥞', '💕', '🙏', '❤️'];
+    const pancake = document.createElement('div');
+    pancake.classList.add('floating-pancake');
+    pancake.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+    pancake.style.left = Math.random() * 100 + '%';
+    pancake.style.animationDuration = (Math.random() * 3 + 5) + 's';
+    pancake.style.fontSize = (Math.random() * 15 + 20) + 'px';
+    document.getElementById('floatingPancakes').appendChild(pancake);
     
-    const loading = document.getElementById('loading');
-    const successMsg = document.getElementById('successMsg');
-    const errorMsg = document.getElementById('errorMsg');
-    const submitBtn = document.getElementById('submitBtn');
+    setTimeout(() => {
+      pancake.remove();
+    }, 8000);
+  }
+
+  setInterval(createFloatingPancake, 600);
+
+  // Конфетти эффект
+  function createConfetti() {
+    const colors = ['#f4a261', '#e76f51', '#ffd89b', '#ffb4a2', '#feca57'];
     
-    loading.style.display = 'block';
-    successMsg.style.display = 'none';
-    errorMsg.style.display = 'none';
-    submitBtn.disabled = true;
-    
-    const data = {
-      ism: document.getElementById('ism').value,
-      familiya: document.getElementById('familiya').value,
-      sana: document.getElementById('sana').value,
-      avtomobil: document.getElementById('avtomobil').value,
-      yoqadigan: document.getElementById('yoqadigan').value,
-      fan: document.getElementById('fan').value,
-      razmer: document.getElementById('razmer').value
-    };
-    
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
-      loading.style.display = 'none';
-      submitBtn.disabled = false;
-      
-      if (result.status === 'success') {
-        successMsg.style.display = 'block';
-        document.getElementById('dataForm').reset();
+    for (let i = 0; i < 50; i++) {
+      setTimeout(() => {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        document.body.appendChild(confetti);
         
         setTimeout(() => {
-          successMsg.style.display = 'none';
-        }, 3000);
-      } else {
-        errorMsg.style.display = 'block';
-      }
-    })
-    .catch(error => {
-      loading.style.display = 'none';
-      submitBtn.disabled = false;
-      errorMsg.style.display = 'block';
-      console.error('Xatolik:', error);
-    });
-  });
+          confetti.remove();
+        }, 4000);
+      }, i * 30);
+    }
+  }
+
+  for (let i = 0; i < 5; i++) {
+    setTimeout(createFloatingPancake, i * 300);
+  }
 </script>
 
 </body>
 </html>
+
+
+
