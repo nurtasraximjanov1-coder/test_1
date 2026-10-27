@@ -1,463 +1,639 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Kechirasanmi? 🥞</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpaceAstra — Исследуй Вселенную</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  :root{
+    --bg:#05050f;
+    --accent:#7c4dff;
+    --accent2:#00e5ff;
+    --accent3:#ff4d8d;
+    --text:#e8e8f5;
+    --muted:#9a9ac0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI', Roboto, sans-serif;
+    overflow-x:hidden;
+    cursor:default;
   }
 
-  body {
-    min-height: 100vh;
-    background: linear-gradient(-45deg, #ffd89b, #f4a261, #e76f51, #ffb4a2);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    overflow-x: hidden;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* ===== Preloader ===== */
+  #preloader{
+    position:fixed;inset:0;background:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    z-index:9999;transition:opacity .8s ease, visibility .8s;
+  }
+  #preloader.hide{opacity:0;visibility:hidden;}
+  .loader-ring{
+    width:80px;height:80px;border-radius:50%;
+    border:3px solid transparent;
+    border-top-color:var(--accent);
+    border-right-color:var(--accent2);
+    animation:spin 1s linear infinite;
+    position:relative;
+  }
+  .loader-ring::after{
+    content:'';position:absolute;inset:14px;
+    border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff, var(--accent3));
+    box-shadow:0 0 30px var(--accent3);
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* ===== Canvas background ===== */
+  #stars-canvas{
+    position:fixed;inset:0;z-index:0;
   }
 
-  @keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  /* ===== Nebula blobs ===== */
+  .nebula{
+    position:fixed;border-radius:50%;filter:blur(120px);
+    opacity:.35;z-index:0;pointer-events:none;
+  }
+  .nebula1{width:500px;height:500px;background:var(--accent);top:-150px;left:-150px;animation:float1 20s ease-in-out infinite;}
+  .nebula2{width:400px;height:400px;background:var(--accent3);bottom:-100px;right:-100px;animation:float2 25s ease-in-out infinite;}
+  .nebula3{width:350px;height:350px;background:var(--accent2);top:50%;left:50%;animation:float3 18s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0);}50%{transform:translate(100px,80px);}}
+  @keyframes float2{0%,100%{transform:translate(0,0);}50%{transform:translate(-80px,-60px);}}
+  @keyframes float3{0%,100%{transform:translate(-50%,-50%);}50%{transform:translate(-40%,-60%);}}
+
+  section, header, footer{position:relative;z-index:1;}
+
+  /* ===== Header ===== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 6%;
+    background:rgba(5,5,15,0.3);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,.07);
+    transition:background .3s;
+  }
+  .logo{
+    font-size:26px;font-weight:800;letter-spacing:1px;
+    background:linear-gradient(90deg,var(--accent2),var(--accent),var(--accent3));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    background-size:200% auto;
+    animation:shine 4s linear infinite;
+  }
+  @keyframes shine{to{background-position:200% center;}}
+  nav ul{list-style:none;display:flex;gap:35px;}
+  nav a{
+    color:var(--text);text-decoration:none;font-size:15px;font-weight:500;
+    position:relative;padding:4px 0;transition:color .3s;
+  }
+  nav a::after{
+    content:'';position:absolute;bottom:0;left:0;width:0;height:2px;
+    background:linear-gradient(90deg,var(--accent2),var(--accent3));
+    transition:width .3s;
+  }
+  nav a:hover{color:var(--accent2);}
+  nav a:hover::after{width:100%;}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:200;}
+  .burger span{width:26px;height:2px;background:var(--text);transition:.3s;}
+
+  /* ===== Hero ===== */
+  .hero{
+    min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:0 20px;position:relative;
+  }
+  .hero-badge{
+    padding:8px 20px;border:1px solid rgba(124,77,255,.5);
+    border-radius:30px;font-size:13px;color:var(--accent2);
+    background:rgba(124,77,255,.1);margin-bottom:25px;
+    animation:fadeDown 1s ease .2s both;
+  }
+  .hero h1{
+    font-size:clamp(40px,8vw,90px);font-weight:900;line-height:1.05;
+    background:linear-gradient(135deg,#fff 20%,var(--accent2) 50%,var(--accent) 80%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:fadeUp 1s ease .4s both;
+  }
+  .hero p{
+    max-width:600px;margin:25px auto;color:var(--muted);
+    font-size:clamp(15px,2vw,19px);
+    animation:fadeUp 1s ease .6s both;
+  }
+  .hero-btns{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;animation:fadeUp 1s ease .8s both;}
+  .btn{
+    padding:15px 36px;border-radius:40px;font-weight:600;font-size:15px;
+    text-decoration:none;cursor:pointer;border:none;transition:.3s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--accent),var(--accent3));color:#fff;
+    box-shadow:0 10px 30px rgba(124,77,255,.4);
+  }
+  .btn-primary:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 15px 40px rgba(124,77,255,.6);}
+  .btn-outline{
+    border:1px solid rgba(255,255,255,.3);color:var(--text);background:transparent;
+  }
+  .btn-outline:hover{background:rgba(255,255,255,.08);transform:translateY(-4px);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+
+  .scroll-indicator{
+    position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+    width:26px;height:42px;border:2px solid var(--muted);border-radius:20px;
+  }
+  .scroll-indicator::before{
+    content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);
+    width:4px;height:8px;background:var(--accent2);border-radius:2px;
+    animation:scrollDot 1.5s infinite;
+  }
+  @keyframes scrollDot{0%{opacity:1;top:8px;}100%{opacity:0;top:22px;}}
+
+  /* ===== Section common ===== */
+  .section{padding:120px 6%;}
+  .section-title{
+    text-align:center;font-size:clamp(32px,5vw,52px);font-weight:800;margin-bottom:15px;
+  }
+  .section-title span{
+    background:linear-gradient(90deg,var(--accent2),var(--accent3));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .section-sub{
+    text-align:center;color:var(--muted);max-width:600px;margin:0 auto 70px;font-size:16px;
+  }
+  .reveal{opacity:0;transform:translateY(50px);transition:opacity .8s ease, transform .8s ease;}
+  .reveal.active{opacity:1;transform:translateY(0);}
+
+  /* ===== Stats ===== */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:30px;max-width:1100px;margin:0 auto;
+  }
+  .stat-box{
+    text-align:center;padding:35px 15px;border-radius:20px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+    transition:.4s;
+  }
+  .stat-box:hover{transform:translateY(-8px);background:rgba(124,77,255,.08);border-color:var(--accent);}
+  .stat-num{
+    font-size:clamp(34px,5vw,48px);font-weight:900;color:var(--accent2);
+  }
+  .stat-label{color:var(--muted);margin-top:8px;font-size:14px;}
+
+  /* ===== Planets ===== */
+  .planets-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px;max-width:1200px;margin:0 auto;
+  }
+  .planet-card{
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;padding:35px 25px;text-align:center;
+    position:relative;overflow:hidden;transition:.4s;
+  }
+  .planet-card:hover{
+    transform:translateY(-12px);
+    box-shadow:0 20px 50px rgba(124,77,255,.3);
+    border-color:var(--accent);
+  }
+  .planet-card::before{
+    content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+    background:radial-gradient(circle,rgba(124,77,255,.15),transparent 60%);
+    opacity:0;transition:opacity .4s;
+  }
+  .planet-card:hover::before{opacity:1;}
+  .planet-visual{
+    width:110px;height:110px;border-radius:50%;margin:0 auto 25px;
+    position:relative;animation:rotate 12s linear infinite;
+    box-shadow:inset -15px -15px 40px rgba(0,0,0,.5);
+  }
+  @keyframes rotate{to{transform:rotate(360deg);}}
+  .p-mercury{background:radial-gradient(circle at 35% 35%,#c9c0b8,#8a7f72);}
+  .p-venus{background:radial-gradient(circle at 35% 35%,#f0c987,#c89a4f);}
+  .p-earth{background:radial-gradient(circle at 35% 35%,#6ec3ff,#1a5fb4 60%,#1b3a1b);}
+  .p-mars{background:radial-gradient(circle at 35% 35%,#ff8a65,#b33c1e);}
+  .p-jupiter{background:radial-gradient(circle at 35% 35%,#e0c097,#b4793f 70%);}
+  .p-saturn{background:radial-gradient(circle at 35% 35%,#f4e2b8,#c7a35f);}
+  .planet-card h3{font-size:22px;margin-bottom:10px;}
+  .planet-card p{color:var(--muted);font-size:14px;line-height:1.6;}
+
+  /* ===== Gallery ===== */
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;max-width:1200px;margin:0 auto;
+  }
+  .gallery-item{
+    height:260px;border-radius:20px;position:relative;overflow:hidden;cursor:pointer;
+    display:flex;align-items:flex-end;padding:25px;
+  }
+  .gallery-item img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    transition:transform .6s ease;
+  }
+  .gallery-item:hover img{transform:scale(1.15);}
+  .gallery-item::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(to top, rgba(5,5,15,.95), transparent 60%);
+  }
+  .gallery-text{position:relative;z-index:2;}
+  .gallery-text h4{font-size:18px;margin-bottom:5px;}
+  .gallery-text span{color:var(--accent2);font-size:13px;}
+
+  /* ===== Timeline / Missions ===== */
+  .timeline{max-width:800px;margin:0 auto;position:relative;}
+  .timeline::before{
+    content:'';position:absolute;left:20px;top:0;bottom:0;width:2px;
+    background:linear-gradient(to bottom,var(--accent),var(--accent2),var(--accent3));
+  }
+  .timeline-item{
+    position:relative;padding-left:60px;margin-bottom:45px;
+  }
+  .timeline-item::before{
+    content:'';position:absolute;left:12px;top:4px;width:18px;height:18px;border-radius:50%;
+    background:var(--accent2);box-shadow:0 0 15px var(--accent2);
+    border:3px solid var(--bg);
+  }
+  .timeline-item h4{font-size:20px;margin-bottom:8px;}
+  .timeline-item .date{color:var(--accent3);font-size:13px;font-weight:700;margin-bottom:6px;display:block;}
+  .timeline-item p{color:var(--muted);font-size:15px;line-height:1.6;}
+
+  /* ===== Newsletter ===== */
+  .newsletter{
+    max-width:700px;margin:0 auto;text-align:center;
+    background:linear-gradient(135deg,rgba(124,77,255,.15),rgba(0,229,255,.1));
+    border:1px solid rgba(255,255,255,.1);border-radius:30px;padding:60px 40px;
+  }
+  .newsletter h2{font-size:clamp(26px,4vw,38px);margin-bottom:15px;}
+  .newsletter p{color:var(--muted);margin-bottom:30px;}
+  .form-row{display:flex;gap:15px;flex-wrap:wrap;justify-content:center;}
+  .form-row input{
+    flex:1;min-width:220px;padding:15px 22px;border-radius:40px;border:1px solid rgba(255,255,255,.2);
+    background:rgba(255,255,255,.05);color:var(--text);outline:none;font-size:15px;
+  }
+  .form-row input:focus{border-color:var(--accent2);}
+
+  /* ===== Footer ===== */
+  footer{
+    padding:60px 6% 30px;border-top:1px solid rgba(255,255,255,.08);
+  }
+  .footer-top{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px;max-width:1200px;margin:0 auto 40px;
+  }
+  .footer-col h4{margin-bottom:20px;font-size:17px;}
+  .footer-col ul{list-style:none;}
+  .footer-col ul li{margin-bottom:12px;}
+  .footer-col a{color:var(--muted);text-decoration:none;font-size:14px;transition:.3s;}
+  .footer-col a:hover{color:var(--accent2);}
+  .social-icons{display:flex;gap:15px;margin-top:15px;}
+  .social-icons a{
+    width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.15);
+    display:flex;align-items:center;justify-content:center;font-size:16px;
+    transition:.3s;
+  }
+  .social-icons a:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-4px);}
+  .footer-bottom{
+    text-align:center;color:var(--muted);font-size:13px;padding-top:25px;
+    border-top:1px solid rgba(255,255,255,.07);
   }
 
-  .screen {
-    display: none;
-    width: 100%;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    position: relative;
-    z-index: 10;
+  /* back to top */
+  #toTop{
+    position:fixed;bottom:30px;right:30px;width:50px;height:50px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    z-index:90;opacity:0;visibility:hidden;transition:.4s;color:#fff;font-size:20px;
+    box-shadow:0 10px 25px rgba(124,77,255,.4);
   }
+  #toTop.show{opacity:1;visibility:visible;}
+  #toTop:hover{transform:translateY(-5px);}
 
-  .screen.active {
-    display: flex;
-    animation: fadeInScreen 0.8s ease;
-  }
-
-  @keyframes fadeInScreen {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  .card {
-    background: rgba(255, 255, 255, 0.96);
-    border-radius: 30px;
-    padding: 40px 30px;
-    max-width: 450px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    position: relative;
-    animation: cardPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
-
-  @keyframes cardPop {
-    0% { transform: scale(0) rotate(-10deg); opacity: 0; }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  }
-
-  h1 {
-    color: #e76f51;
-    margin-bottom: 20px;
-    font-size: 26px;
-    animation: pulse 2s infinite;
-  }
-
-  h2 {
-    color: #f4a261;
-    margin-bottom: 20px;
-    font-size: 22px;
-  }
-
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-
-  .big-icon {
-    font-size: 70px;
-    margin-bottom: 20px;
-    animation: wobble 2s infinite;
-    display: inline-block;
-  }
-
-  @keyframes wobble {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    25% { transform: rotate(-10deg) scale(1.1); }
-    75% { transform: rotate(10deg) scale(1.1); }
-  }
-
-  .sad-icon {
-    animation: sadShake 3s infinite;
-  }
-
-  @keyframes sadShake {
-    0%, 100% { transform: translateX(0) rotate(0deg); }
-    10% { transform: translateX(-5px) rotate(-5deg); }
-    20% { transform: translateX(5px) rotate(5deg); }
-    30% { transform: translateX(-5px) rotate(-5deg); }
-    40% { transform: translateX(0) rotate(0deg); }
-  }
-
-  .story-text {
-    text-align: left;
-    line-height: 1.8;
-    color: #555;
-    font-size: 16px;
-    margin: 20px 0;
-    animation: fadeInText 1.5s ease;
-  }
-
-  @keyframes fadeInText {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  button {
-    padding: 15px 35px;
-    border: none;
-    border-radius: 50px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    margin: 10px;
-  }
-
-  .btn-main {
-    background: linear-gradient(135deg, #f4a261, #e76f51);
-    color: white;
-    box-shadow: 0 10px 20px rgba(231, 111, 81, 0.4);
-  }
-
-  .btn-main:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 15px 30px rgba(231, 111, 81, 0.6);
-  }
-
-  .btn-main:active {
-    transform: translateY(0) scale(0.98);
-  }
-
-  .buttons-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-    position: relative;
-    min-height: 120px;
-    align-items: center;
-  }
-
-  #btnYes, #btnNo {
-    position: relative;
-    transition: transform 0.2s ease-out;
-  }
-
-  #btnNo {
-    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
-    color: white;
-  }
-
-  .floating-pancakes {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-  }
-
-  .floating-pancake {
-    position: absolute;
-    font-size: 25px;
-    animation: floatDown linear infinite;
-    opacity: 0.6;
-  }
-
-  @keyframes floatDown {
-    0% {
-      transform: translateY(-50px) rotate(0deg);
-      opacity: 0;
+  /* ===== Responsive ===== */
+  @media(max-width:900px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    nav{
+      position:fixed;top:0;right:-100%;width:70%;height:100vh;
+      background:rgba(5,5,20,.98);backdrop-filter:blur(20px);
+      flex-direction:column;align-items:center;justify-content:center;
+      transition:right .4s ease;
     }
-    10% {
-      opacity: 0.6;
-    }
-    90% {
-      opacity: 0.6;
-    }
-    100% {
-      transform: translateY(100vh) rotate(360deg);
-      opacity: 0;
-    }
+    nav.open{right:0;}
+    nav ul{flex-direction:column;text-align:center;gap:30px;}
+    .burger{display:flex;}
+    .burger.open span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
+    .burger.open span:nth-child(2){opacity:0;}
+    .burger.open span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
   }
-
-  .confetti {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    top: -10px;
-    z-index: 1000;
-    animation: confettiFall linear forwards;
-  }
-
-  @keyframes confettiFall {
-    to {
-      transform: translateY(100vh) rotate(720deg);
-      opacity: 0;
-    }
-  }
-
-  .final-emoji {
-    font-size: 60px;
-    margin: 20px 0;
-    animation: bounce 2s infinite;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-  }
-
-  .signature {
-    margin-top: 25px;
-    font-style: italic;
-    color: #e76f51;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .promise-box {
-    background: #fff3e0;
-    border-radius: 15px;
-    padding: 15px;
-    margin: 15px 0;
-    border-left: 4px solid #f4a261;
-    text-align: left;
-    font-size: 15px;
-    color: #6b4423;
-  }
-
-  .next-btn-wrap {
-    margin-top: 20px;
-  }
-
-  @media (max-width: 480px) {
-    .card {
-      padding: 30px 20px;
-    }
-    h1 {
-      font-size: 20px;
-    }
-    h2 {
-      font-size: 18px;
-    }
-    .big-icon {
-      font-size: 55px;
-    }
-    .story-text {
-      font-size: 14px;
-    }
-    button {
-      padding: 12px 25px;
-      font-size: 16px;
-    }
+  @media(max-width:600px){
+    .stats{grid-template-columns:1fr 1fr;}
+    .section{padding:80px 5%;}
+    .form-row{flex-direction:column;}
+    .form-row input, .form-row button{width:100%;}
   }
 </style>
 </head>
 <body>
 
-<div class="floating-pancakes" id="floatingPancakes"></div>
+<div id="preloader"><div class="loader-ring"></div></div>
 
-<!-- Экран 1: Начало извинения -->
-<div class="screen active" id="screen1">
-  <div class="card">
-    <div class="big-icon sad-icon">😔</div>
-    <h1>Mening sevgilim...</h1>
-    <p style="color: #666; font-size: 16px; margin-top: 10px;">Senga aytadigan gapim bor</p>
-    <div class="next-btn-wrap">
-      <button class="btn-main" onclick="nextScreen('screen1', 'screen2')">Davom etish →</button>
+<canvas id="stars-canvas"></canvas>
+<div class="nebula nebula1"></div>
+<div class="nebula nebula2"></div>
+<div class="nebula nebula3"></div>
+
+<header id="header">
+  <div class="logo">✦ SpaceAstra</div>
+  <nav id="nav">
+    <ul>
+      <li><a href="#home">Главная</a></li>
+      <li><a href="#stats">О нас</a></li>
+      <li><a href="#planets">Планеты</a></li>
+      <li><a href="#gallery">Галерея</a></li>
+      <li><a href="#missions">Миссии</a></li>
+      <li><a href="#contact">Контакты</a></li>
+    </ul>
+  </nav>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-badge">🚀 Добро пожаловать во Вселенную</div>
+  <h1>SpaceAstra</h1>
+  <p>Исследуйте бескрайние просторы космоса, открывайте тайны далёких галактик и присоединяйтесь к будущему космических путешествий.</p>
+  <div class="hero-btns">
+    <a href="#planets" class="btn btn-primary">🌍 Начать исследование</a>
+    <a href="#missions" class="btn btn-outline">📡 Наши миссии</a>
+  </div>
+  <div class="scroll-indicator"></div>
+</section>
+
+<section class="section" id="stats">
+  <h2 class="section-title reveal">Вселенная в <span>цифрах</span></h2>
+  <p class="section-sub reveal">Невероятные масштабы космоса, которые сложно представить</p>
+  <div class="stats">
+    <div class="stat-box reveal"><div class="stat-num" data-target="100">0</div><div class="stat-label">Млрд галактик</div></div>
+    <div class="stat-box reveal"><div class="stat-num" data-target="8">0</div><div class="stat-label">Планет системы</div></div>
+    <div class="stat-box reveal"><div class="stat-num" data-target="4600">0</div><div class="stat-label">Млн лет Земле</div></div>
+    <div class="stat-box reveal"><div class="stat-num" data-target="2500">0</div><div class="stat-label">Экзопланет открыто</div></div>
+  </div>
+</section>
+
+<section class="section" id="planets">
+  <h2 class="section-title reveal">Солнечная <span>Система</span></h2>
+  <p class="section-sub reveal">Путешествие по планетам нашей родной звёздной системы</p>
+  <div class="planets-grid">
+    <div class="planet-card reveal"><div class="planet-visual p-mercury"></div><h3>Меркурий</h3><p>Самая маленькая и ближайшая к Солнцу планета с экстремальными температурами.</p></div>
+    <div class="planet-card reveal"><div class="planet-visual p-venus"></div><h3>Венера</h3><p>Самая горячая планета системы, укутанная плотной атмосферой из CO₂.</p></div>
+    <div class="planet-card reveal"><div class="planet-visual p-earth"></div><h3>Земля</h3><p>Единственная известная планета с жизнью. Наш прекрасный дом.</p></div>
+    <div class="planet-card reveal"><div class="planet-visual p-mars"></div><h3>Марс</h3><p>Красная планета — главная цель будущей колонизации человечества.</p></div>
+    <div class="planet-card reveal"><div class="planet-visual p-jupiter"></div><h3>Юпитер</h3><p>Крупнейшая планета системы с огромным Большим красным пятном.</p></div>
+    <div class="planet-card reveal"><div class="planet-visual p-saturn"></div><h3>Сатурн</h3><p>Известен своими потрясающими кольцами изо льда и камня.</p></div>
+  </div>
+</section>
+
+<section class="section" id="gallery">
+  <h2 class="section-title reveal">Космическая <span>Галерея</span></h2>
+  <p class="section-sub reveal">Захватывающие виды далёкого космоса</p>
+  <div class="gallery-grid">
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800" alt="galaxy">
+      <div class="gallery-text"><h4>Туманность Ориона</h4><span>Глубокий космос</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=800" alt="space">
+      <div class="gallery-text"><h4>Звёздное скопление</h4><span>Млечный путь</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800" alt="earth">
+      <div class="gallery-text"><h4>Планета Земля</h4><span>Из космоса</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=800" alt="nebula">
+      <div class="gallery-text"><h4>Туманность</h4><span>Рождение звёзд</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1446776709462-d6b525c57bd3?w=800" alt="stars">
+      <div class="gallery-text"><h4>Звёздное небо</h4><span>Ночная съёмка</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=800" alt="rocket">
+      <div class="gallery-text"><h4>Запуск ракеты</h4><span>Космодром</span></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- Экран 2: История про блинчики -->
-<div class="screen" id="screen2">
-  <div class="card">
-    <div class="big-icon">🥞</div>
-    <h2>Bugun nima bo'ldi...</h2>
-    <div class="story-text">
-      <p>Bugun sen men uchun o'z qo'ling bilan, sevgi bilan <strong>Blinchik</strong> pishirding. 🥞</p>
-      <br>
-      <p>Sen meni o'ylab, vaqtingni sarflab, mehr bilan tayyorlading... Lekin men... men ularni olishni unutib qo'ydim. 😔</p>
-      <br>
-      <p>Bilaman, bu sen uchun alam qilgandir. Sen mehr ko'rsatding, men esa beparvolik qildim.</p>
+<section class="section" id="missions">
+  <h2 class="section-title reveal">Наши <span>Миссии</span></h2>
+  <p class="section-sub reveal">История покорения космоса — ключевые вехи</p>
+  <div class="timeline">
+    <div class="timeline-item reveal"><span class="date">1957</span><h4>Первый спутник</h4><p>Запуск "Спутник-1" — первого искусственного спутника Земли, открывший космическую эру.</p></div>
+    <div class="timeline-item reveal"><span class="date">1961</span><h4>Человек в космосе</h4><p>Юрий Гагарин совершает первый полёт человека в космос на корабле "Восток-1".</p></div>
+    <div class="timeline-item reveal"><span class="date">1969</span><h4>Высадка на Луну</h4><p>Миссия "Аполлон-11" — первые люди ступают на поверхность Луны.</p></div>
+    <div class="timeline-item reveal"><span class="date">2021</span><h4>Марсоход Perseverance</h4><p>Посадка марсохода на Марс для поиска следов древней жизни.</p></div>
+    <div class="timeline-item reveal"><span class="date">2030+</span><h4>Колонизация Марса</h4><p>Планируемые миссии по созданию первой постоянной колонии на Красной планете.</p></div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="newsletter reveal">
+    <h2>Присоединяйся к SpaceAstra 🚀</h2>
+    <p>Подпишись и получай свежие новости о космических открытиях первым</p>
+    <form class="form-row" onsubmit="event.preventDefault(); this.querySelector('input').value=''; alert('Спасибо за подписку! 🌌');">
+      <input type="email" placeholder="Твой email адрес" required>
+      <button type="submit" class="btn btn-primary">Подписаться</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-col">
+      <div class="logo" style="margin-bottom:15px;">✦ SpaceAstra</div>
+      <p style="color:var(--muted);font-size:14px;max-width:280px;">Исследуем космос вместе. Познаём тайны Вселенной шаг за шагом.</p>
+      <div class="social-icons">
+        <a href="#">𝕏</a><a href="#">▶</a><a href="#">📷</a><a href="#">✈</a>
+      </div>
     </div>
-    <div class="next-btn-wrap">
-      <button class="btn-main" onclick="nextScreen('screen2', 'screen3')">Davom etish →</button>
+    <div class="footer-col">
+      <h4>Навигация</h4>
+      <ul>
+        <li><a href="#home">Главная</a></li>
+        <li><a href="#planets">Планеты</a></li>
+        <li><a href="#gallery">Галерея</a></li>
+        <li><a href="#missions">Миссии</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Ресурсы</h4>
+      <ul>
+        <li><a href="#">О проекте</a></li>
+        <li><a href="#">Блог</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Партнёры</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Контакты</h4>
+      <ul>
+        <li><a href="#">hello@spaceastra.com</a></li>
+        <li><a href="#">+7 (900) 000-00-00</a></li>
+        <li><a href="#">Москва, Россия</a></li>
+      </ul>
     </div>
   </div>
-</div>
+  <div class="footer-bottom">© 2024 SpaceAstra. Все права защищены. Сделано с 💜 для исследователей космоса.</div>
+</footer>
 
-<!-- Экран 3: Извинение -->
-<div class="screen" id="screen3">
-  <div class="card">
-    <div class="big-icon">🙏</div>
-    <h1>Kechir meni, iltimos</h1>
-    <div class="story-text">
-      <p>Men bilaman, bu kichkina narsa emas. Sen men uchun qildigan har bir ish muhim, va men buni qadrlashim kerak edi.</p>
-      <br>
-      <p>Blinchikni unutganim uchun emas, balki sening mehringni, mehnatingni e'tiborsiz qoldirganim uchun kechirim so'rayman.</p>
-      <br>
-      <p>Men juda uyalyapman va o'zimni yomon his qilyapman. Sen bunday munosabatga loyiq emassan.</p>
-    </div>
-    <div class="promise-box">
-      💝 Va'da beraman: keyingi safar Esdan chiqmidi!
-    </div>
-    <div class="next-btn-wrap">
-      <button class="btn-main" onclick="nextScreen('screen3', 'screen4')">Davom etish →</button>
-    </div>
-  </div>
-</div>
-
-<!-- Экран 4: Вопрос о прощении -->
-<div class="screen" id="screen4">
-  <div class="card">
-    <div class="big-icon">🥺</div>
-    <h1>Meni kechirasanmi?</h1>
-    <p style="color: #666; margin-bottom: 15px;">Iltimos, menga bir imkoniyat ber</p>
-    <div class="buttons-container">
-      <button class="btn-main" id="btnYes" onclick="handleYes()">Ha, kechiraman ❤️</button>
-      <button class="btn-main" id="btnNo" onclick="handleNo()">Yo'q</button>
-    </div>
-  </div>
-</div>
-
-<!-- Экран 5: Финал -->
-<div class="screen" id="screen5">
-  <div class="card">
-    <div class="final-emoji">🥞💕🎉</div>
-    <h1>RAHMAT, SEVGILIM!</h1>
-    <div class="story-text">
-      <p>Sen eng yaxshi insonsan! Mening kechirimimni qabul qilganing uchun rahmat. 💖</p>
-      <br>
-      <p>Men va'da beraman, bundan keyin sen uchun qilgan har bir ishingni, har bir Blinchikni, har bir mehringni qadrlayman.</p>
-      <br>
-      <p>Sen pishirgan Blinchik dunyodagi eng mazali narsa, chunki unda sening mehring bor. Keyingi safar albatta birga yeymiz! 🥞❤️</p>
-      <br>
-      <p>Seni juda sevaman va hech qachon xafa qilmaslikka harakat qilaman.</p>
-    </div>
-    <div class="signature">- Seni sevgan va qadrlagan odam 💑</div>
-  </div>
-</div>
+<div id="toTop">↑</div>
 
 <script>
-  function nextScreen(hideId, showId) {
-    document.getElementById(hideId).classList.remove('active');
-    document.getElementById(showId).classList.add('active');
-  }
+// ===== Preloader =====
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    document.getElementById('preloader').classList.add('hide');
+  }, 600);
+});
 
-  // Счетчик нажатий на "Да"
-  let yesClickCount = 0;
-
-  function moveButtonAway(btn) {
-    const container = btn.parentElement;
-    const containerRect = container.getBoundingClientRect();
-    const btnRect = btn.getBoundingClientRect();
-    
-    const maxX = containerRect.width - btnRect.width;
-    const maxY = containerRect.height - btnRect.height;
-    
-    const randomX = Math.random() * maxX - maxX/2;
-    const randomY = Math.random() * maxY - maxY/2;
-    
-    btn.style.position = 'relative';
-    btn.style.left = randomX + 'px';
-    btn.style.top = randomY + 'px';
-  }
-
-  function handleNo() {
-    const btnNo = document.getElementById('btnNo');
-    moveButtonAway(btnNo);
-  }
-
-  document.getElementById('btnNo').addEventListener('mouseover', function() {
-    moveButtonAway(this);
+// ===== Burger menu =====
+const burger = document.getElementById('burger');
+const nav = document.getElementById('nav');
+burger.addEventListener('click', ()=>{
+  burger.classList.toggle('open');
+  nav.classList.toggle('open');
+});
+document.querySelectorAll('nav a').forEach(a=>{
+  a.addEventListener('click', ()=>{
+    burger.classList.remove('open');
+    nav.classList.remove('open');
   });
+});
 
-  document.getElementById('btnNo').addEventListener('touchstart', function(e) {
-    e.preventDefault();
-    moveButtonAway(this);
-  });
+// ===== Header background on scroll =====
+const header = document.getElementById('header');
+window.addEventListener('scroll', ()=>{
+  header.style.background = window.scrollY > 50 ? 'rgba(5,5,15,0.75)' : 'rgba(5,5,15,0.3)';
+  document.getElementById('toTop').classList.toggle('show', window.scrollY > 500);
+});
 
-  function handleYes() {
-    createConfetti();
-    setTimeout(() => {
-      document.getElementById('screen4').classList.remove('active');
-      document.getElementById('screen5').classList.add('active');
-    }, 800);
-  }
+// ===== Back to top =====
+document.getElementById('toTop').addEventListener('click', ()=>{
+  window.scrollTo({top:0, behavior:'smooth'});
+});
 
-  // Летающие блинчики на фоне
-  function createFloatingPancake() {
-    const icons = ['🥞', '💕', '🙏', '❤️'];
-    const pancake = document.createElement('div');
-    pancake.classList.add('floating-pancake');
-    pancake.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-    pancake.style.left = Math.random() * 100 + '%';
-    pancake.style.animationDuration = (Math.random() * 3 + 5) + 's';
-    pancake.style.fontSize = (Math.random() * 15 + 20) + 'px';
-    document.getElementById('floatingPancakes').appendChild(pancake);
-    
-    setTimeout(() => {
-      pancake.remove();
-    }, 8000);
-  }
-
-  setInterval(createFloatingPancake, 600);
-
-  // Конфетти эффект
-  function createConfetti() {
-    const colors = ['#f4a261', '#e76f51', '#ffd89b', '#ffb4a2', '#feca57'];
-    
-    for (let i = 0; i < 50; i++) {
-      setTimeout(() => {
-        const confetti = document.createElement('div');
-        confetti.classList.add('confetti');
-        confetti.style.left = Math.random() * 100 + '%';
-        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-        document.body.appendChild(confetti);
-        
-        setTimeout(() => {
-          confetti.remove();
-        }, 4000);
-      }, i * 30);
+// ===== Reveal on scroll =====
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('active');
+      // animate counters
+      if(entry.target.classList.contains('stat-box')){
+        const num = entry.target.querySelector('.stat-num');
+        animateCounter(num);
+      }
     }
-  }
+  });
+},{threshold:0.2});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-  for (let i = 0; i < 5; i++) {
-    setTimeout(createFloatingPancake, i * 300);
+function animateCounter(el){
+  if(el.dataset.done) return;
+  el.dataset.done = true;
+  const target = +el.dataset.target;
+  let current = 0;
+  const step = Math.max(target/80, 1);
+  const timer = setInterval(()=>{
+    current += step;
+    if(current >= target){
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = Math.floor(current).toLocaleString('ru-RU');
+  },20);
+}
+
+// ===== Starfield Canvas =====
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let w, h, stars = [], meteors = [];
+
+function resize(){
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+function initStars(){
+  stars = [];
+  const count = Math.floor((w*h)/4000);
+  for(let i=0;i<count;i++){
+    stars.push({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: Math.random()*1.5+0.3,
+      alpha: Math.random(),
+      delta: (Math.random()*0.02)+0.005,
+      speed: Math.random()*0.15+0.02
+    });
   }
+}
+initStars();
+window.addEventListener('resize', initStars);
+
+function spawnMeteor(){
+  meteors.push({
+    x: Math.random()*w,
+    y: 0,
+    len: Math.random()*120+80,
+    speed: Math.random()*8+6,
+    angle: Math.PI/4,
+    alpha: 1
+  });
+}
+setInterval(spawnMeteor, 3500);
+
+let mouseX = w/2, mouseY = h/2;
+window.addEventListener('mousemove', (e)=>{
+  mouseX = e.clientX; mouseY = e.clientY;
+});
+
+function animate(){
+  ctx.clearRect(0,0,w,h);
+
+  // parallax offset based on mouse
+  const px = (mouseX - w/2)/80;
+  const py = (mouseY - h/2)/80;
+
+  stars.forEach(s=>{
+    s.alpha += s.delta;
+    if(s.alpha<=0 || s.alpha>=1) s.delta *= -1;
+    s.y += s.speed;
+    if(s.y > h) s.y = 0;
+
+    ctx.beginPath();
+    ctx.arc(s.x+px, s.y+py, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+    ctx.fill();
+  });
+
+  meteors.forEach((m,i)=>{
+    const x2 = m.x + Math.cos(m.angle)*m.len;
+    const y2 = m.y + Math.sin(m.angle)*m.len;
+    const grad = ctx.createLinearGradient(m.x,m.y,x2,y2);
+    grad.addColorStop(0, `rgba(255,255,255,${m.alpha})`);
+    grad.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(m.x,m.y);
+    ctx.lineTo(x2,y2);
+    ctx.stroke();
+
+    m.x += Math.cos(m.angle)*m.speed;
+    m.y += Math.sin(m.angle)*m.speed;
+    m.alpha -= 0.012;
+    if(m.alpha<=0 || m.y>h) meteors.splice(i,1);
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
 </script>
-
 </body>
 </html>
-
-
-
